@@ -5,10 +5,7 @@ import htw.berlin.webtech.webtechprojekt.api.GeldCreateRequest;
 import htw.berlin.webtech.webtechprojekt.persistence.GeldRepository;
 import htw.berlin.webtech.webtechprojekt.service.GeldService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +24,12 @@ public class GeldRestController {
     public ResponseEntity<List<Geld>> fetchGelder(){
         return ResponseEntity.ok(geldService.findAll());
 
+    }
+
+    @GetMapping(path = "/api/v1/gelder/{id}")
+    public ResponseEntity<Geld> fetchGeldById(@PathVariable Long id){
+        var geld = geldService.findById(id);
+        return geld != null? ResponseEntity.ok(geld) : ResponseEntity.notFound().build();
     }
 
     @PostMapping(path = "/api/v1/gelder")

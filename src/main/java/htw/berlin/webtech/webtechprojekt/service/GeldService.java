@@ -24,6 +24,11 @@ public class GeldService {
                 collect(Collectors.toList());
     }
 
+    public Geld findById(Long id){
+        var geldEntity = geldRepository.findById(id);
+        return geldEntity.map(this::transformEntity).orElse(null);
+    }
+
     public Geld create(GeldCreateRequest request){
         var geldEntity = new GeldEntity(request.getName(), request.getGeldBetrag(), request.isEinnahme());
         geldEntity = geldRepository.save(geldEntity);
