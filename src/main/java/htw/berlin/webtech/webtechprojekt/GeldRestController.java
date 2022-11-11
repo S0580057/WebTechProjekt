@@ -1,8 +1,7 @@
 package htw.berlin.webtech.webtechprojekt;
 
 import htw.berlin.webtech.webtechprojekt.api.Geld;
-import htw.berlin.webtech.webtechprojekt.api.GeldCreateRequest;
-import htw.berlin.webtech.webtechprojekt.persistence.GeldRepository;
+import htw.berlin.webtech.webtechprojekt.api.GeldManipulationRequest;
 import htw.berlin.webtech.webtechprojekt.service.GeldService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +32,17 @@ public class GeldRestController {
     }
 
     @PostMapping(path = "/api/v1/gelder")
-    public ResponseEntity<Void> createGeld(@RequestBody GeldCreateRequest request) throws URISyntaxException {
+    public ResponseEntity<Void> createGeld(@RequestBody GeldManipulationRequest request) throws URISyntaxException {
         var geld = geldService.create(request);
         URI uri = new URI("/api/v1/gelder/" + geld.getId());
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(path = "/api/v1/gelder/{id}")
+    public ResponseEntity<Geld> updateGeld(@PathVariable Long id, @RequestBody GeldManipulationRequest request){
+        var geld = geldService.update(id, request);
+        return geld != null? ResponseEntity.ok(geld) : ResponseEntity.notFound().build();
+
     }
 
 }

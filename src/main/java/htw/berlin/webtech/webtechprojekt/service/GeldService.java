@@ -1,7 +1,7 @@
 package htw.berlin.webtech.webtechprojekt.service;
 
 import htw.berlin.webtech.webtechprojekt.api.Geld;
-import htw.berlin.webtech.webtechprojekt.api.GeldCreateRequest;
+import htw.berlin.webtech.webtechprojekt.api.GeldManipulationRequest;
 import htw.berlin.webtech.webtechprojekt.persistence.GeldEntity;
 import htw.berlin.webtech.webtechprojekt.persistence.GeldRepository;
 import org.springframework.stereotype.Service;
@@ -29,9 +29,24 @@ public class GeldService {
         return geldEntity.map(this::transformEntity).orElse(null);
     }
 
-    public Geld create(GeldCreateRequest request){
+    public Geld create(GeldManipulationRequest request){
         var geldEntity = new GeldEntity(request.getName(), request.getGeldBetrag(), request.isEinnahme());
         geldEntity = geldRepository.save(geldEntity);
+        return transformEntity(geldEntity);
+    }
+
+    public Geld update(Long id, GeldManipulationRequest request){
+        var geldEntityOptional = geldRepository.findById(id);
+        if (geldEntityOptional.isEmpty()){
+            return null;
+        }
+
+        var geldEntity = geldEntityOptional.get();
+        geldEntity.setName(request.getName());
+        geldEntity.setGeldBetrag(request.getGeldBetrag());
+        geldEntity.setEinnahme(request.isEinnahme());
+        geldEntity = geldRepository.save(geldEntity);
+
         return transformEntity(geldEntity);
     }
 

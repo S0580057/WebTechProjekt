@@ -1,12 +1,12 @@
 package htw.berlin.webtech.webtechprojekt.api;
 
-public class GeldCreateRequest {
+public class GeldManipulationRequest {
 
     private String name;
     private long geldBetrag;
     private boolean einnahme;
 
-    public GeldCreateRequest(String name, long geldBetrag, boolean einnahme) {
+    public GeldManipulationRequest(String name, long geldBetrag, boolean einnahme) {
         this.name = name;
         this.geldBetrag = geldBetrag;
         this.einnahme = einnahme;
