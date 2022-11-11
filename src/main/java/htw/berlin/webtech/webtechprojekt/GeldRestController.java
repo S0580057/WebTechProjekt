@@ -45,4 +45,10 @@ public class GeldRestController {
 
     }
 
+    @DeleteMapping(path = "/api/v1/gelder/{id}")
+    public ResponseEntity<Void> deleteGeld(@PathVariable Long id){
+        boolean successful =geldService.deleteById(id);
+        return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
 }

@@ -50,6 +50,15 @@ public class GeldService {
         return transformEntity(geldEntity);
     }
 
+    public boolean deleteById(Long id) {
+        if(!geldRepository.existsById(id)){
+            return false;
+        }
+
+        geldRepository.deleteById(id);
+        return true;
+    }
+
     private Geld transformEntity(GeldEntity geldEntity){
 
         return new Geld(
