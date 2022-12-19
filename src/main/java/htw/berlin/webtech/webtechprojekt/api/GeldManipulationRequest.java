@@ -6,6 +6,7 @@ public class GeldManipulationRequest {
     private long geldBetrag;
     private boolean einnahme;
 
+    public GeldManipulationRequest() {}
     public GeldManipulationRequest(String name, long geldBetrag, boolean einnahme) {
         this.name = name;
         this.geldBetrag = geldBetrag;
