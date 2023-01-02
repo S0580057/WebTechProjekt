@@ -30,6 +30,7 @@ public class GeldService {
     }
 
     public Geld create(GeldManipulationRequest request){
+        System.out.println("test");
         var geldEntity = new GeldEntity(request.getName(), request.getGeldBetrag(), request.isEinnahme());
         geldEntity = geldRepository.save(geldEntity);
         return transformEntity(geldEntity);
