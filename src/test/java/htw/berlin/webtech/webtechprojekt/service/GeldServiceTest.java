@@ -9,10 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GeldServiceTest implements WithAssertions {
@@ -37,6 +34,19 @@ public class GeldServiceTest implements WithAssertions {
         verify(repository).deleteById(givenId);
         assertThat(result).isTrue();
 
+    }
+
+    @Test
+    @DisplayName("Es soll der Wert false zurück gegeben werden, wenn die Einnahme bzw Ausgabe nicht existiert")
+    void shouldReturnFalseIfGeldNotExist(){
+
+        Long givenId = 200L;
+        doReturn(false).when(repository).existsById(givenId);
+
+        boolean result = toTest.deleteById(givenId);
+
+        verifyNoMoreInteractions(repository);
+        assertThat(result).isFalse();
     }
 
 }
