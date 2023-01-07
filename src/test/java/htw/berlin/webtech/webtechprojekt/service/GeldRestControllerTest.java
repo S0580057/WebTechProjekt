@@ -65,7 +65,7 @@ public class GeldRestControllerTest {
     }
 
     @Test
-    @DisplayName("soll 201 http stutus und Location header zurückgeben wenn ein geld erstellt wird")
+    @DisplayName("soll 201 http status und Location header zurückgeben wenn ein geld erstellt wird")
     void shouldReturn201HttpStatusAndLocationHeaderIfCreationAGeld() throws Exception{
 
         String geldToCreateAsJson = "{\"name\": \"Schuhe\", \"geldBetrag\": 100, \"einnahme\": false}";
@@ -81,6 +81,36 @@ public class GeldRestControllerTest {
                 .andExpect(header().exists("Location"))
                 .andExpect(header().string("Location", Matchers.equalTo("/api/v1/gelder/" + geld.getId())));
     }
+
+    @Test
+    @DisplayName("soll die validierung testen, wenn der geldBetrag 0 ist")
+    void shouldTestIfMoneyZero() throws Exception {
+
+        String geldAsJson = "{\"name\": \"pizza\", \"geldBetrag\": 0, \"einnahme\": false}";
+
+        mockMvc.perform(
+                post("/api/v1/gelder")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(geldAsJson)
+        )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("soll die validierung testen, wenn kein name angegeben wird")
+    void shouldTestIfNoName() throws Exception {
+
+        String geldAsJson = "{\"name\": \"\", \"geldBetrag\": 10, \"einnahme\": false}";
+
+        mockMvc.perform(
+                        post("/api/v1/gelder")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(geldAsJson)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+
 
 
 
