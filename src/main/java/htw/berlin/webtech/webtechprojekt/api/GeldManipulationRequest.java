@@ -1,6 +1,9 @@
 package htw.berlin.webtech.webtechprojekt.api;
 
+import javax.validation.constraints.Size;
+
 public class GeldManipulationRequest {
+
 
     private String name;
     private long geldBetrag;

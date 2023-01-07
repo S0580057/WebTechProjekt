@@ -33,9 +33,16 @@ public class GeldRestController {
 
     @PostMapping(path = "/api/v1/gelder")
     public ResponseEntity<Void> createGeld(@RequestBody GeldManipulationRequest request) throws URISyntaxException {
-        var geld = geldService.create(request);
-        URI uri = new URI("/api/v1/gelder/" + geld.getId());
-        return ResponseEntity.created(uri).build();
+        var valid = validate(request);
+        if (valid){
+            var geld = geldService.create(request);
+            URI uri = new URI("/api/v1/gelder/" + geld.getId());
+            return ResponseEntity.created(uri).build();
+        }
+        else{
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PutMapping(path = "/api/v1/gelder/{id}")
@@ -49,6 +56,12 @@ public class GeldRestController {
     public ResponseEntity<Void> deleteGeld(@PathVariable Long id){
         boolean successful =geldService.deleteById(id);
         return successful? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    private boolean validate(GeldManipulationRequest request){
+        return request.getName() != null
+                && !request.getName().isBlank()
+                && request.getGeldBetrag() != 0;
     }
 
 }
